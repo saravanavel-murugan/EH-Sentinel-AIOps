@@ -1,0 +1,25 @@
+# Secrets / environment
+.env
+*.env
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Logs (keep sample logs tracked explicitly if needed; ignore rotated/large ones)
+logs/*.rotated
+*.log.*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# FAISS index artifacts (Phase 4+)
+knowledge/faiss_index/*.faiss
+knowledge/faiss_index/*.pkl

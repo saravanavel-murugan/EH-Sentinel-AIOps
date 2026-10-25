@@ -1,0 +1,40 @@
+# EventHub Ops Sentinel — Phase 8 packaging / reproducibility.
+#
+# Makes the project installable (`pip install .`) with the SAME pinned
+# dependency set as requirements.txt, without changing the `python scripts/...`
+# invocation style the demos and tests rely on.
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eventhub-sentinel"
+version = "0.8.0"
+description = "EventHub Ops Sentinel — framework-free multi-agent AIOps copilot (advisory, read-only)."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+
+# Pinned to match requirements.txt for reproducible installs.
+dependencies = [
+    "langchain==0.3.27",
+    "langchain-core==0.3.78",
+    "langgraph==0.6.11",
+    "langchain-openai==0.3.35",
+    "pydantic==2.9.2",
+    "python-dotenv==1.0.1",
+    "faiss-cpu==1.9.0",
+    "numpy==1.26.4",
+    "streamlit==1.39.0",
+]
+
+[project.optional-dependencies]
+test = ["pytest==8.3.3"]
+
+# Discover the first-party packages. Scripts stay runnable via `python scripts/...`.
+[tool.setuptools]
+packages = ["agent", "tools", "mcp", "ui"]
+
+[tool.setuptools.package-dir]
+"" = "."
