@@ -1,0 +1,144 @@
+{
+  "generated_at": "2026-10-19T21:43:06.636037+00:00",
+  "transport": "mcp",
+  "server": {
+    "name": "eventhub-sentinel-mcp",
+    "version": "0.1.0"
+  },
+  "protocol_version": "2024-11-05",
+  "tool": "search_knowledge",
+  "top_k": 3,
+  "n_queries": 5,
+  "queries": [
+    {
+      "query": "how do I handle rising consumer lag on a topic",
+      "ok": true,
+      "found": true,
+      "best_score": 0.581212043762207,
+      "documents_referenced": [
+        {
+          "source": "runbooks.md",
+          "heading": "RB-01 — Consumer lag rising",
+          "score": 0.581,
+          "snippet": "RB-01 — Consumer lag rising\n**Symptoms:** `consumer_lag` growing beyond baseline; downstream processing delayed; app latency up.\n\n**Likely causes:**\n- Downstream consumer slow or under-capacity (most common).\n- Consumer errors causing repea"
+        },
+        {
+          "source": "faq.md",
+          "heading": "EventHub Ops — Operator FAQ",
+          "score": 0.36,
+          "snippet": "EventHub Ops — Operator FAQ\nCommon questions for the on-call Platform Operations operator using Sentinel.\n\n---\n\n**Q: Is a short-lived lag spike always an incident?**\nNo. A brief `consumer_lag` spike that self-resolves within the observation"
+        },
+        {
+          "source": "escalation_guidelines.md",
+          "heading": "P2 / High",
+          "score": 0.353,
+          "snippet": "P2 / High\n- **When:** major degradation of a critical service, rapidly increasing lag, multiple\n  partitions/connectors affected, SLO breach likely.\n- **Escalation:** urgent page to the owning team; engage platform + application teams; regu"
+        }
+      ]
+    },
+    {
+      "query": "what causes under-replicated partitions and how to recover",
+      "ok": true,
+      "found": true,
+      "best_score": 0.5146209001541138,
+      "documents_referenced": [
+        {
+          "source": "runbooks.md",
+          "heading": "RB-02 — Broker unavailable / under-replicated partitions",
+          "score": 0.515,
+          "snippet": "RB-02 — Broker unavailable / under-replicated partitions\n**Symptoms:** `broker_down`, `under_replicated_partitions` > 0, ISR shrink, elevated request queue.\n\n**Likely causes:**\n- Broker process crash or host failure.\n- Network partition / d"
+        },
+        {
+          "source": "runbooks.md",
+          "heading": "RB-01 — Consumer lag rising",
+          "score": 0.381,
+          "snippet": "RB-01 — Consumer lag rising\n**Symptoms:** `consumer_lag` growing beyond baseline; downstream processing delayed; app latency up.\n\n**Likely causes:**\n- Downstream consumer slow or under-capacity (most common).\n- Consumer errors causing repea"
+        },
+        {
+          "source": "escalation_guidelines.md",
+          "heading": "P2 / High",
+          "score": 0.303,
+          "snippet": "P2 / High\n- **When:** major degradation of a critical service, rapidly increasing lag, multiple\n  partitions/connectors affected, SLO breach likely.\n- **Escalation:** urgent page to the owning team; engage platform + application teams; regu"
+        }
+      ]
+    },
+    {
+      "query": "producer error rate surge - quota or ACL rejection runbook",
+      "ok": true,
+      "found": true,
+      "best_score": 0.5984432697296143,
+      "documents_referenced": [
+        {
+          "source": "runbooks.md",
+          "heading": "RB-04 — Producer error / retry surge",
+          "score": 0.598,
+          "snippet": "RB-04 — Producer error / retry surge\n**Symptoms:** `produce_error_rate` spike, retries, auth failures, quota metrics near limit.\n\n**Likely causes:**\n- Quota/throttling or capacity saturation.\n- ACL/authentication rejection.\n- Broker load or"
+        },
+        {
+          "source": "escalation_guidelines.md",
+          "heading": "Escalation triggers (any one fires an escalation)",
+          "score": 0.41,
+          "snippet": "Escalation triggers (any one fires an escalation)\n- Severity increases or blast radius widens.\n- SLA/acknowledgement timer expires.\n- Recovery not confirmed within the observation window; issue persists or worsens.\n- Security relevance dete"
+        },
+        {
+          "source": "escalation_guidelines.md",
+          "heading": "Escalation rules",
+          "score": 0.409,
+          "snippet": "Escalation rules\n- Resolve recipients only from the approved on-call roster — never guess.\n- Business Owners receive business-impact-framed updates; technical teams receive evidence-framed updates.\n- Never claim a notification was delivered"
+        }
+      ]
+    },
+    {
+      "query": "how do I escalate a P2 incident and who do I page",
+      "ok": true,
+      "found": true,
+      "best_score": 0.5664689540863037,
+      "documents_referenced": [
+        {
+          "source": "escalation_guidelines.md",
+          "heading": "EventHub Ops — Escalation Guidelines",
+          "score": 0.566,
+          "snippet": "EventHub Ops — Escalation Guidelines\nHow and when to escalate, by severity. Channels/recipients are resolved from the approved\ndirectory (see `events_stakeholder_summary.md`); values here are policy, not contacts.\n\n---"
+        },
+        {
+          "source": "escalation_guidelines.md",
+          "heading": "P2 / High",
+          "score": 0.566,
+          "snippet": "P2 / High\n- **When:** major degradation of a critical service, rapidly increasing lag, multiple\n  partitions/connectors affected, SLO breach likely.\n- **Escalation:** urgent page to the owning team; engage platform + application teams; regu"
+        },
+        {
+          "source": "escalation_guidelines.md",
+          "heading": "P1 / Critical",
+          "score": 0.552,
+          "snippet": "P1 / Critical\n- **When:** confirmed/strongly-suspected outage or severe degradation of a critical banking event\n  flow (payments, cards, ATM, fraud, trades, ledger); event-loss risk; security/control-plane issue.\n- **Escalation:** page plat"
+        }
+      ]
+    },
+    {
+      "query": "kafka connect connector task failed what to check",
+      "ok": true,
+      "found": true,
+      "best_score": 0.6838748455047607,
+      "documents_referenced": [
+        {
+          "source": "runbooks.md",
+          "heading": "RB-03 — Kafka Connect connector/task failure",
+          "score": 0.684,
+          "snippet": "RB-03 — Kafka Connect connector/task failure\n**Symptoms:** `connector_task_failed`, rising `sink_error_rate` / `source_error_rate`, worker log errors.\n\n**Likely causes:**\n- Credentials/ACL expiry on the connector.\n- Schema mismatch between "
+        },
+        {
+          "source": "runbooks.md",
+          "heading": "EventHub Ops — Kafka Incident Runbooks",
+          "score": 0.383,
+          "snippet": "EventHub Ops — Kafka Incident Runbooks\nOperational runbooks for the banking Confluent Kafka platform. Each runbook lists symptoms,\nlikely causes, safe diagnostic steps, and remediation. All remediation that changes production\nrequires human"
+        },
+        {
+          "source": "company_policy.md",
+          "heading": "EventHub Ops — Platform & Governance Policy",
+          "score": 0.336,
+          "snippet": "EventHub Ops — Platform & Governance Policy\nGovernance and safety policy for the Sentinel AIOps system on a banking Kafka platform.\n\n---"
+        }
+      ]
+    }
+  ]
+}

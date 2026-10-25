@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-10-25T20:07:03.419435+00:00",
+  "result": "PASS",
+  "offline": true,
+  "langfuse": {
+    "enabled": false,
+    "reason": "disabled (not configured)"
+  },
+  "deepeval": {
+    "enabled": false,
+    "reason": "disabled (not configured)"
+  },
+  "langfuse_trace_status": {
+    "enabled": false,
+    "reason": "disabled (not configured)"
+  },
+  "deepeval_score": {
+    "enabled": false,
+    "reason": "disabled (not configured)",
+    "metrics": {}
+  },
+  "notes": [
+    "Optional LLM monitoring (R4) is OFF by default — no key, no network.",
+    "Enable by uncommenting the deepeval/langfuse block in requirements.txt and setting the OFF-by-default keys in .env (see .env.example).",
+    "Every outbound monitoring string is routed through redact_and_mask."
+  ]
+}

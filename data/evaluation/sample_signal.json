@@ -1,0 +1,1 @@
+{"signal_id":"sig-sample","source":"control_center","entity":{"type":"topic","id":"payments.settlement"},"metric_or_event":"consumer_lag","value":60000,"unit":"messages","environment":"prod"}

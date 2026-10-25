@@ -1,0 +1,15 @@
+{
+  "description": "Labelled retrieval-quality queries. 'expect_source' + 'expect_contains' define the gold chunk; 'relevant' marks whether any knowledge should match at all (for the no-relevant-info case).",
+  "queries": [
+    {"id": "rq-01", "query": "consumer lag is rising on a topic, what should I check first", "relevant": true, "expect_source": "runbooks.md", "expect_contains": "RB-01"},
+    {"id": "rq-02", "query": "kafka connect connector task failed with authentication error", "relevant": true, "expect_source": "runbooks.md", "expect_contains": "RB-03"},
+    {"id": "rq-03", "query": "under replicated partitions and a broker is down", "relevant": true, "expect_source": "runbooks.md", "expect_contains": "RB-02"},
+    {"id": "rq-04", "query": "producer error retry surge quota throttling", "relevant": true, "expect_source": "runbooks.md", "expect_contains": "RB-04"},
+    {"id": "rq-05", "query": "schema registry compatibility failure after deployment", "relevant": true, "expect_source": "runbooks.md", "expect_contains": "RB-05"},
+    {"id": "rq-06", "query": "how is severity decided and will sentinel restart a broker automatically", "relevant": true, "expect_source": "faq.md", "expect_contains": "severity"},
+    {"id": "rq-07", "query": "when do I escalate a P1 critical incident and who to page", "relevant": true, "expect_source": "escalation_guidelines.md", "expect_contains": "P1"},
+    {"id": "rq-08", "query": "what is the policy on redacting secrets before model calls", "relevant": true, "expect_source": "company_policy.md", "expect_contains": "redact"},
+    {"id": "rq-09", "query": "best recipe for a chocolate birthday cake with frosting", "relevant": false, "expect_source": null, "expect_contains": null},
+    {"id": "rq-10", "query": "weather forecast for tomorrow in London", "relevant": false, "expect_source": null, "expect_contains": null}
+  ]
+}

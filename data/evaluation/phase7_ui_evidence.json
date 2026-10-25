@@ -1,0 +1,134 @@
+{
+  "generated_at": "2026-10-24T20:21:21.669560+00:00",
+  "provider": "openai",
+  "retrieval_enabled": false,
+  "ui": "ui/streamlit_app.py",
+  "flow": "signal (before) -> sidebar feedback form -> signal (after)",
+  "before_panel": {
+    "panel": "Adaptive behaviour (Phase 7)",
+    "applied": false,
+    "headline": "No adaptation applied for topic:payments.settlement — identical to the pre-feedback baseline.",
+    "badges": [],
+    "explanations": []
+  },
+  "feedback_recorded": [
+    {
+      "category": "severity_too_low",
+      "signal": "down",
+      "note": "operator felt severity understated the business risk",
+      "feedback_id": "fb-1",
+      "negative": true,
+      "count_for_entity": 1
+    },
+    {
+      "category": "severity_too_low",
+      "signal": "down",
+      "note": "second operator agreed",
+      "feedback_id": "fb-2",
+      "negative": true,
+      "count_for_entity": 2
+    },
+    {
+      "category": "too_verbose",
+      "signal": "down",
+      "note": "too long for triage",
+      "feedback_id": "fb-3",
+      "negative": true,
+      "count_for_entity": 3
+    },
+    {
+      "category": "too_verbose",
+      "signal": "down",
+      "note": "prefer a concise summary",
+      "feedback_id": "fb-4",
+      "negative": true,
+      "count_for_entity": 4
+    }
+  ],
+  "after_panel": {
+    "panel": "Adaptive behaviour (Phase 7)",
+    "applied": true,
+    "headline": "Adaptation applied (advisory) for topic:payments.settlement: 📊 Severity nudge · ✂️ Concise mode · 🔁 Recurrence emphasis",
+    "badges": [
+      "📊 Severity nudge",
+      "✂️ Concise mode",
+      "🔁 Recurrence emphasis"
+    ],
+    "explanations": [
+      "severity_nudge: 2 operator(s) flagged severity_too_low on topic:payments.settlement — advisory recommendation to consider a higher severity (A3 output unchanged).",
+      "concise: 2 operator(s) flagged too_verbose on topic:payments.settlement — rendering a concise response (safety + escalation lines preserved).",
+      "recurrence_emphasis: 1 prior incident(s) and 4 negative operator feedback item(s) on topic:payments.settlement — surfacing a stronger recurrence banner."
+    ]
+  },
+  "sidebar_feedback_summary": {
+    "count": 4,
+    "category_counts": {
+      "severity_too_low": 2,
+      "too_verbose": 2
+    },
+    "records": [
+      {
+        "feedback_id": "fb-1",
+        "entity": "topic:payments.settlement",
+        "metric": "consumer_lag",
+        "incident_id": "incident_001",
+        "signal": "down",
+        "rating": null,
+        "category": "severity_too_low",
+        "note": "operator felt severity understated the business risk",
+        "ts": "2026-10-24T20:20:57.959164+00:00"
+      },
+      {
+        "feedback_id": "fb-2",
+        "entity": "topic:payments.settlement",
+        "metric": "consumer_lag",
+        "incident_id": "incident_001",
+        "signal": "down",
+        "rating": null,
+        "category": "severity_too_low",
+        "note": "second operator agreed",
+        "ts": "2026-10-24T20:20:57.961195+00:00"
+      },
+      {
+        "feedback_id": "fb-3",
+        "entity": "topic:payments.settlement",
+        "metric": "consumer_lag",
+        "incident_id": "incident_001",
+        "signal": "down",
+        "rating": null,
+        "category": "too_verbose",
+        "note": "too long for triage",
+        "ts": "2026-10-24T20:20:57.961195+00:00"
+      },
+      {
+        "feedback_id": "fb-4",
+        "entity": "topic:payments.settlement",
+        "metric": "consumer_lag",
+        "incident_id": "incident_001",
+        "signal": "down",
+        "rating": null,
+        "category": "too_verbose",
+        "note": "prefer a concise summary",
+        "ts": "2026-10-24T20:20:57.964826+00:00"
+      }
+    ]
+  },
+  "before_adaptation_flags": {
+    "entity": "topic:payments.settlement",
+    "severity_nudge": false,
+    "concise": false,
+    "recurrence_emphasis": false,
+    "explanations": []
+  },
+  "after_adaptation_flags": {
+    "entity": "topic:payments.settlement",
+    "severity_nudge": true,
+    "concise": true,
+    "recurrence_emphasis": true,
+    "explanations": [
+      "severity_nudge: 2 operator(s) flagged severity_too_low on topic:payments.settlement — advisory recommendation to consider a higher severity (A3 output unchanged).",
+      "concise: 2 operator(s) flagged too_verbose on topic:payments.settlement — rendering a concise response (safety + escalation lines preserved).",
+      "recurrence_emphasis: 1 prior incident(s) and 4 negative operator feedback item(s) on topic:payments.settlement — surfacing a stronger recurrence banner."
+    ]
+  }
+}

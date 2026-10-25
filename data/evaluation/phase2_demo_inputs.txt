@@ -1,0 +1,33 @@
+# Phase 2 baseline agent — forced demo inputs (one per line).
+# Lines starting with '#' and blank lines are ignored.
+# Mix of normalized-signal JSON and free-text questions.
+# Some lines are crafted to expose baseline limitations (noted inline above each block).
+
+# --- 1. Happy path: known critical topic, high consumer lag -> confirmed/P1 ---
+{"signal_id":"sig-001","source":"control_center","entity":{"type":"topic","id":"payments.settlement"},"metric_or_event":"consumer_lag","value":125000,"unit":"messages","environment":"prod"}
+
+# --- 2. Happy path: known fraud consumer group lagging ---
+{"signal_id":"sig-002","source":"control_center","entity":{"type":"consumer_group","id":"fraud.scoring"},"metric_or_event":"consumer_lag","value":90000,"unit":"messages","environment":"prod"}
+
+# --- 3. LIMITATION (brittle keywords): paraphrased question, no keyword match -> unknown intent ---
+Is this topic falling behind and should I be worried?
+
+# --- 4. Free-text with a matching keyword works ---
+Who do I notify for payments?
+
+# --- 5. LIMITATION (unknown entity): entity not in static table -> no impact/stakeholders ---
+{"signal_id":"sig-005","source":"control_center","entity":{"type":"topic","id":"loans.disbursement"},"metric_or_event":"consumer_lag","value":80000,"unit":"messages","environment":"prod"}
+
+# --- 6. LIMITATION (no correlation/dedup): three duplicates of the SAME alert -> three separate responses ---
+{"signal_id":"sig-006a","source":"control_center","entity":{"type":"topic","id":"cards.authorization"},"metric_or_event":"produce_error_rate","value":35,"unit":"errors/s","environment":"prod"}
+{"signal_id":"sig-006b","source":"control_center","entity":{"type":"topic","id":"cards.authorization"},"metric_or_event":"produce_error_rate","value":36,"unit":"errors/s","environment":"prod"}
+{"signal_id":"sig-006c","source":"control_center","entity":{"type":"topic","id":"cards.authorization"},"metric_or_event":"produce_error_rate","value":34,"unit":"errors/s","environment":"prod"}
+
+# --- 7. LIMITATION (no baseline for metric): unknown metric -> insufficient evidence ---
+{"signal_id":"sig-007","source":"prometheus","entity":{"type":"broker","id":"broker-3"},"metric_or_event":"disk_usage","value":92,"unit":"percent","environment":"prod"}
+
+# --- 8. Low value on critical topic -> noise/P4 (coarse) ---
+{"signal_id":"sig-008","source":"control_center","entity":{"type":"topic","id":"trades.execution"},"metric_or_event":"consumer_lag","value":1000,"unit":"messages","environment":"prod"}
+
+# --- 9. Free-text asking about recovery -> templated "cannot verify" ---
+Has the payments incident recovered yet?

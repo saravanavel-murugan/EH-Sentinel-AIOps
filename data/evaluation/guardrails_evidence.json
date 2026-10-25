@@ -1,0 +1,54 @@
+{
+  "generated_at": "2026-10-25T20:06:48.979090+00:00",
+  "provider": "fake",
+  "result": "PASS",
+  "guardrails": [
+    {
+      "guardrail": "domain_scope",
+      "input_summary": "off-topic question ('what is the weather today')",
+      "fired": true,
+      "evidence": "classify_scope -> out_of_scope (no in-domain terms detected); session turn kind=refused"
+    },
+    {
+      "guardrail": "pii_masking",
+      "input_summary": "operator message carrying a real email + phone",
+      "fired": true,
+      "evidence": "masked -> 'reach me at <EMAIL> / <PHONE>'; reserved placeholder preserved -> 'directory owner alice@example.com'"
+    },
+    {
+      "guardrail": "secret_redaction",
+      "input_summary": "an environment assignment leaking an API key",
+      "fired": true,
+      "evidence": "redact(...) -> '<redacted>'"
+    },
+    {
+      "guardrail": "allow_list",
+      "input_summary": "router asks for an unregistered tool ('restart_broker')",
+      "fired": true,
+      "evidence": "step guardrail=validation_failed; error=tool 'restart_broker' is not in the allow-list (known: ['search_knowledge', 'loo"
+    },
+    {
+      "guardrail": "schema_validation",
+      "input_summary": "known tool called with an unknown argument",
+      "fired": true,
+      "evidence": "step guardrail=validation_failed; error=missing required argument 'entity_id' for tool 'lookup_metric'"
+    },
+    {
+      "guardrail": "approval_gate",
+      "input_summary": "operator asks who to notify (approval-gated tool)",
+      "fired": true,
+      "evidence": "approval note present=True; delivery_status=not_sent"
+    },
+    {
+      "guardrail": "loop_prevention",
+      "input_summary": "a degenerate router that repeats the identical call",
+      "fired": true,
+      "evidence": "stop_reason=loop prevented: repeated call restart_broker:{\"id\": \"b1\"}; repeated_call step=True"
+    }
+  ],
+  "notes": [
+    "All checks run offline on the deterministic fake provider (no key/network).",
+    "Every guardrail row fired==True and no secret/PII appears in this evidence.",
+    "See docs/guardrails.md for where each guardrail is enforced."
+  ]
+}

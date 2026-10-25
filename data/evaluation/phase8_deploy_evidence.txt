@@ -1,0 +1,42 @@
+# Phase 8 — deployment-readiness evidence
+# generated: 2026-10-25T19:55:10.953383+00:00
+# provider: fake  retrieval: False
+# result: PASS
+
+Demonstrates: a traced normal run with a captured latency number, the
+three graceful-failure scenarios returning structured non-crashing
+responses, and the per-run latency/error traces persisted to disk.
+All offline on the deterministic fake provider; no secret/PII is logged.
+
+## Summary table
+```
+scenario          outcome           latency_ms  status  
+--------------------------------------------------------
+normal_run        success           26          ok      
+malformed_input   graceful_error    0           error   
+provider_outage   graceful_error    2           error   
+missing_index     success           13          ok      
+```
+
+## Scenario detail
+- normal_run: signal turn via traced safe runtime
+    outcome=success  kind=signal  latency_ms=26  status=ok
+- malformed_input: internal error on bad input degraded gracefully
+    outcome=graceful_error  kind=error  latency_ms=0  status=error  error_type=ValueError
+- provider_outage: hard provider failure degraded gracefully
+    outcome=graceful_error  kind=error  latency_ms=2  status=error  error_type=_SimulatedProviderOutage
+- missing_index: retrieval disabled/missing index completes (no crash)
+    outcome=success  kind=signal  latency_ms=13  status=ok
+
+## Trace tail (logs/traces.jsonl)
+```
+run-42190262  session.handle_turn  status=ok  latency_ms=26  error_type=None
+run-476999ea  session.handle_turn  status=error  latency_ms=0  error_type=ValueError
+run-7c68cb9f  session.handle_turn  status=error  latency_ms=2  error_type=_SimulatedProviderOutage
+run-bbcdbf82  session.handle_turn  status=ok  latency_ms=13  error_type=None
+```
+
+## Safety posture
+Adaptation/degradation is advisory only; no production action is taken
+on failure, and no stack trace or secret ever reaches the user-facing
+response, the logs, or this evidence file.

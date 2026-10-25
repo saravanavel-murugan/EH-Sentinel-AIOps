@@ -1,0 +1,7 @@
+# Phase-9 extra test signals: 5 Kafka broker / partition / ZooKeeper infrastructure anomalies.
+# One normalized-signal JSON per line (run with: python scripts/run_multiagent.py --batch data/evaluation/infra_anomaly_batch.txt)
+{"signal_id":"inf-01","source":"control_center","entity":{"type":"broker","id":"broker-2"},"metric_or_event":"under_replicated_partitions","value":37,"unit":"count","environment":"prod"}
+{"signal_id":"inf-02","source":"prometheus","entity":{"type":"broker","id":"broker-5"},"metric_or_event":"request_queue_depth","value":2100,"unit":"requests","environment":"prod"}
+{"signal_id":"inf-03","source":"control_center","entity":{"type":"partition","id":"payments.settlement-7"},"metric_or_event":"produce_error_rate","value":48,"unit":"errors/s","environment":"prod"}
+{"signal_id":"inf-04","source":"prometheus","entity":{"type":"zookeeper","id":"zk-node-1"},"metric_or_event":"zk_session_expired_rate","value":9,"unit":"events/min","environment":"prod"}
+{"signal_id":"inf-05","source":"control_center","entity":{"type":"broker","id":"broker-3"},"metric_or_event":"under_replicated_partitions","value":2,"unit":"count","environment":"prod"}

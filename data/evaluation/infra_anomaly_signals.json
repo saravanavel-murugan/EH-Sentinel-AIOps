@@ -1,0 +1,70 @@
+{
+  "description": "Phase-9 extra test signals: 5 Kafka broker / partition / ZooKeeper infrastructure anomalies for exercising RCA (A4) and remediation (A5) quality. Metrics use the recognized set where possible (under_replicated_partitions, request_queue_depth, produce_error_rate) so classification is grounded; broker/partition/zookeeper entities are intentionally outside the business entity table, so they exercise the novel/unknown-entity path (uncertainty + escalation, no fabricated recipients).",
+  "cases": [
+    {
+      "id": "inf-01-under-replicated-partitions",
+      "note": "Broker fell out of ISR for several Tier-1 partitions. under_replicated_partitions well above threshold (1). Expect confirmed/high severity, RCA ranking broker down / disk / network / ISR shrink, remediation = diagnostics first, all approval-gated.",
+      "signal": {
+        "signal_id": "inf-01",
+        "source": "control_center",
+        "entity": {"type": "broker", "id": "broker-2"},
+        "metric_or_event": "under_replicated_partitions",
+        "value": 37,
+        "unit": "count",
+        "environment": "prod"
+      }
+    },
+    {
+      "id": "inf-02-broker-request-queue-saturation",
+      "note": "Broker request queue depth saturated (threshold 500). Indicates broker overload / slow I/O. Expect RCA covering request handler exhaustion, disk latency, GC pauses, hot partition; remediation = read-only diagnostics + capacity check.",
+      "signal": {
+        "signal_id": "inf-02",
+        "source": "prometheus",
+        "entity": {"type": "broker", "id": "broker-5"},
+        "metric_or_event": "request_queue_depth",
+        "value": 2100,
+        "unit": "requests",
+        "environment": "prod"
+      }
+    },
+    {
+      "id": "inf-03-partition-offline-produce-errors",
+      "note": "A specific partition leader is unavailable; producers to it error out. produce_error_rate above threshold (10). Entity is a partition. Expect correlation to the owning broker, RCA on leader election / min.insync.replicas / offline partition.",
+      "signal": {
+        "signal_id": "inf-03",
+        "source": "control_center",
+        "entity": {"type": "partition", "id": "payments.settlement-7"},
+        "metric_or_event": "produce_error_rate",
+        "value": 48,
+        "unit": "errors/s",
+        "environment": "prod"
+      }
+    },
+    {
+      "id": "inf-04-zookeeper-session-expiry",
+      "note": "ZooKeeper session/connectivity anomaly (controller/metadata risk). Metric is NOT in the baseline set, so this exercises the novel-signal LLM path: expect promotion to 'likely' with explicit uncertainty + escalation rather than a silent drop, and RCA treating it as metadata-plane risk.",
+      "signal": {
+        "signal_id": "inf-04",
+        "source": "prometheus",
+        "entity": {"type": "zookeeper", "id": "zk-node-1"},
+        "metric_or_event": "zk_session_expired_rate",
+        "value": 9,
+        "unit": "events/min",
+        "environment": "prod"
+      }
+    },
+    {
+      "id": "inf-05-isr-shrink-maybe-maintenance",
+      "note": "under_replicated_partitions just above threshold (value 2) on a broker during a possible maintenance window. Lower magnitude -> 'likely' not 'confirmed'. Tests whether RCA distinguishes planned maintenance from real degradation and whether severity stays proportionate.",
+      "signal": {
+        "signal_id": "inf-05",
+        "source": "control_center",
+        "entity": {"type": "broker", "id": "broker-3"},
+        "metric_or_event": "under_replicated_partitions",
+        "value": 2,
+        "unit": "count",
+        "environment": "prod"
+      }
+    }
+  ]
+}

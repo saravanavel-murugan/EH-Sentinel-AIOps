@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-10-20T19:06:31.666266+00:00",
+  "provider": "openai",
+  "pipeline_version": "phase3b-multiagent-0.1.0",
+  "entity": "topic:payments.settlement",
+  "entity_known": true,
+  "trace": [
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6",
+    "A7",
+    "A8"
+  ],
+  "stop_reason": null,
+  "retrieval": {
+    "enabled": true,
+    "embedder": "openai",
+    "query": "tls cert expiry days tls_cert_expiry_days tls_cert_expiry_days topic",
+    "found": false,
+    "best_score": 0.26791560649871826,
+    "hits": []
+  },
+  "incident_summary": {
+    "incident_id": "incident_001",
+    "summary": "The TLS certificate for the Payments Settlement service is nearing expiration, with only 2 days remaining, which poses a critical risk of payment delays or failures and potential SLA/regulatory issues. There is currently no baseline rule for the metric 'tls_cert_expiry_days', making it difficult to assess the urgency of the situation, and further verification and monitoring checks are required.",
+    "issue": "topic:payments.settlement: tls_cert_expiry_days = 2 days (classification: likely, anomaly_score: 0.5) in prod.",
+    "root_cause": "[source: LLM-inferred (no matching runbook; validate before acting)] [likely] TLS certificate is nearing expiration (next check: Verify the expiration date of the TLS certificate for the payments settlement service.); [moderate] Lack of monitoring or alerts for TLS certificate expiration (next check: Check the monitoring configuration for TLS certificate expiration alerts.)",
+    "correlation": "candidate=incident_001; correlated_signals=['sig-novel-live2', 'tls_cert_expiry_days']; dependency_path=Payments Settlement",
+    "severity": "P1",
+    "severity_rationale": "The metric 'tls_cert_expiry_days' has a value of 2 days, indicating a critical risk for payment processing. Without a baseline rule for this metric, the potential for significant business impact is high, warranting a P1 classification.",
+    "remediation": [
+      "Verify the expiration date of the TLS certificate for the payments settlement service. (approval_required=True; verify: Check the certificate details in the management system.; rollback: No rollback necessary; this is a verification step.)",
+      "Request baseline data for 'tls_cert_expiry_days' to assess its significance. (approval_required=True; verify: Receive and review the baseline data.; rollback: No rollback necessary; this is a data request.)",
+      "Check the monitoring configuration for TLS certificate expiration alerts. (approval_required=True; verify: Review the monitoring setup for TLS certificate expiration alerts.; rollback: No rollback necessary; this is a diagnostic step.)"
+    ],
+    "business_impact": "Payments delayed or failed; settlement backlog; SLA/regulatory risk",
+    "stakeholders": {
+      "app_owner": "payments-app-owner@example.com",
+      "business_owner": "payments-biz-owner@example.com",
+      "prod_support": "prodsupport-payments@example.com",
+      "sre": "sre-streaming@example.com",
+      "on_call": "pager:payments-oncall / #inc-payments"
+    },
+    "knowledge_references": [
+      "(no matching knowledge-base document - root cause & remediation were LLM-inferred from Kafka domain reasoning; validate before acting)"
+    ],
+    "evidence_links": [
+      "metric:tls_cert_expiry_days"
+    ]
+  },
+  "closure_document": "# Incident incident_001\n\n**Summary:** The TLS certificate for the Payments Settlement service is nearing expiration, with only 2 days remaining, which poses a critical risk of payment delays or failures and potential SLA/regulatory issues. There is currently no baseline rule for the metric 'tls_cert_expiry_days', making it difficult to assess the urgency of the situation, and further verification and monitoring checks are required.\n\n**Analysis source:** LLM-inferred - this signal is NOT covered by the knowledge base; root cause & remediation were derived by the LLM and must be human-validated before any action.\n\n## 1. Issue (from signal)\ntopic:payments.settlement: tls_cert_expiry_days = 2 days (classification: likely, anomaly_score: 0.5) in prod.\n\n## 2. Root-cause analysis (A4)\n[source: LLM-inferred (no matching runbook; validate before acting)] [likely] TLS certificate is nearing expiration (next check: Verify the expiration date of the TLS certificate for the payments settlement service.); [moderate] Lack of monitoring or alerts for TLS certificate expiration (next check: Check the monitoring configuration for TLS certificate expiration alerts.)\n\n## 3. Correlation (A2)\ncandidate=incident_001; correlated_signals=['sig-novel-live2', 'tls_cert_expiry_days']; dependency_path=Payments Settlement\n\n## 4. Priority / Severity (A3)\nP1 - The metric 'tls_cert_expiry_days' has a value of 2 days, indicating a critical risk for payment processing. Without a baseline rule for this metric, the potential for significant business impact is high, warranting a P1 classification.\n\n## 5. Remediation recommendation (A5)\n  - Verify the expiration date of the TLS certificate for the payments settlement service. (approval_required=True; verify: Check the certificate details in the management system.; rollback: No rollback necessary; this is a verification step.)\n  - Request baseline data for 'tls_cert_expiry_days' to assess its significance. (approval_required=True; verify: Receive and review the baseline data.; rollback: No rollback necessary; this is a data request.)\n  - Check the monitoring configuration for TLS certificate expiration alerts. (approval_required=True; verify: Review the monitoring setup for TLS certificate expiration alerts.; rollback: No rollback necessary; this is a diagnostic step.)\n\n## 6. Business impact\nPayments delayed or failed; settlement backlog; SLA/regulatory risk\n\n## 7. Stakeholders to notify\n  - app_owner: payments-app-owner@example.com\n  - business_owner: payments-biz-owner@example.com\n  - prod_support: prodsupport-payments@example.com\n  - sre: sre-streaming@example.com\n  - on_call: pager:payments-oncall / #inc-payments\n\n## Knowledge referenced (RAG evidence)\n  - (no matching knowledge-base document - root cause & remediation were LLM-inferred from Kafka domain reasoning; validate before acting)\n"
+}

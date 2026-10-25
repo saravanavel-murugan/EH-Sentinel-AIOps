@@ -1,0 +1,293 @@
+# MCP demo transcript
+# generated: 2026-10-20T06:46:54.260254+00:00
+
+###### 1. MCP PROTOCOL TRACE (JSON-RPC over in-process transport) ######
+
+-- initialize (handshake) --
+>> request (client -> server):
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "method": "initialize",
+  "params": {
+    "protocolVersion": "2024-11-05",
+    "capabilities": {
+      "tools": {}
+    },
+    "clientInfo": {
+      "name": "sentinel-tool-agent",
+      "version": "0.1.0"
+    }
+  }
+}
+
+<< response (server -> client):
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": {
+    "protocolVersion": "2024-11-05",
+    "capabilities": {
+      "tools": {
+        "listChanged": false
+      }
+    },
+    "serverInfo": {
+      "name": "eventhub-sentinel-mcp",
+      "version": "0.1.0"
+    },
+    "negotiatedWith": "2024-11-05"
+  }
+}
+
+   server: {'name': 'eventhub-sentinel-mcp', 'version': '0.1.0'}  protocol: 2024-11-05
+
+-- tools/list (discover advertised tools) --
+>> request (client -> server):
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "tools/list",
+  "params": {}
+}
+
+<< response (server -> client):
+{
+  "jsonrpc": "2.0",
+  "id": 2,
+  "result": {
+    "tools": [
+      {
+        "name": "search_knowledge",
+        "description": "Semantic search over runbooks, FAQ, policy and past resolved incidents. Use for 'how do I...', 'what causes...', 'what did we do last time...' questions.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "the search query"
+            },
+            "top_k": {
+              "type": "number",
+              "description": "number of results (default 3)"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "query"
+          ]
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "requiresApproval": false,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "lookup_metric",
+        "description": "Fetch a recent (sandbox) time-series for a metric on an entity. Use for 'what is the current/recent value of <metric> on <entity>' questions.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "entity_id": {
+              "type": "string",
+              "description": "e.g. topic:payments.settlement"
+            },
+            "metric": {
+              "type": "string",
+              "description": "e.g. consumer_lag"
+            },
+            "window_points": {
+              "type": "number",
+              "description": "how many recent points (default 5)"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "entity_id",
+            "metric"
+          ]
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "requiresApproval": false,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "escalate_incident",
+        "description": "Build an approval-gated, DRY-RUN notification plan for an entity's stakeholders (resolved from the approved directory). Use when the operator asks who to notify or to escalate. Never actually sends.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "entity_id": {
+              "type": "string",
+              "description": "e.g. topic:payments.settlement"
+            },
+            "severity": {
+              "type": "string",
+              "description": "P1|P2|P3|P4"
+            },
+            "message": {
+              "type": "string",
+              "description": "short incident message"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "entity_id",
+            "severity",
+            "message"
+          ]
+        },
+        "annotations": {
+          "readOnlyHint": false,
+          "requiresApproval": true,
+          "destructiveHint": true
+        }
+      }
+    ]
+  }
+}
+
+   advertised: ['search_knowledge', 'lookup_metric', 'escalate_incident']
+
+-- tools/call: lookup_metric (read-only) --
+>> request (client -> server):
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "tools/call",
+  "params": {
+    "name": "lookup_metric",
+    "arguments": {
+      "entity_id": "topic:payments.settlement",
+      "metric": "consumer_lag"
+    }
+  }
+}
+
+<< response (server -> client):
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"entity_id\": \"topic:payments.settlement\",\n  \"metric\": \"consumer_lag\",\n  \"unit\": \"messages\",\n  \"series\": [\n    40000,\n    55000,\n    80000,\n    110000,\n    125000\n  ],\n  \"latest\": 125000,\n  \"trend\": \"rising\",\n  \"source\": \"sandbox\"\n}"
+      }
+    ],
+    "isError": false,
+    "structuredContent": {
+      "entity_id": "topic:payments.settlement",
+      "metric": "consumer_lag",
+      "unit": "messages",
+      "series": [
+        40000,
+        55000,
+        80000,
+        110000,
+        125000
+      ],
+      "latest": 125000,
+      "trend": "rising",
+      "source": "sandbox"
+    }
+  }
+}
+
+-- tools/call: escalate_incident (approval-gated, dry-run) --
+>> request (client -> server):
+{
+  "jsonrpc": "2.0",
+  "id": 4,
+  "method": "tools/call",
+  "params": {
+    "name": "escalate_incident",
+    "arguments": {
+      "entity_id": "topic:payments.settlement",
+      "severity": "P1",
+      "message": "settlement consumer lag rising"
+    }
+  }
+}
+
+<< response (server -> client):
+{
+  "jsonrpc": "2.0",
+  "id": 4,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"entity_id\": \"topic:payments.settlement\",\n  \"recipients\": {\n    \"app_owner\": \"payments-app-owner@example.com\",\n    \"business_owner\": \"payments-biz-owner@example.com\",\n    \"prod_support\": \"prodsupport-payments@example.com\",\n    \"sre\": \"sre-streaming@example.com\",\n    \"on_call\": \"pager:payments-oncall / #inc-payments\"\n  },\n  \"channel\": \"page\",\n  \"message\": \"settlement consumer lag rising\",\n  \"delivery_status\": \"not_sent\",\n  \"requires_approval\": true,\n  \"note\": \"DRY-RUN notification plan; no message was sent.\"\n}"
+      }
+    ],
+    "isError": false,
+    "structuredContent": {
+      "entity_id": "topic:payments.settlement",
+      "recipients": {
+        "app_owner": "payments-app-owner@example.com",
+        "business_owner": "payments-biz-owner@example.com",
+        "prod_support": "prodsupport-payments@example.com",
+        "sre": "sre-streaming@example.com",
+        "on_call": "pager:payments-oncall / #inc-payments"
+      },
+      "channel": "page",
+      "message": "settlement consumer lag rising",
+      "delivery_status": "not_sent",
+      "requires_approval": true,
+      "note": "DRY-RUN notification plan; no message was sent."
+    }
+  }
+}
+
+
+###### 2. GUARDRAILS OVER MCP (tool-level errors, not crashes) ######
+
+-- disallowed/unknown tool (restart_broker) --
+   ok=False error=tool 'restart_broker' is not in the allow-list (known: ['search_knowledge', 'lookup_metric', 'escalate_incident'])
+
+-- schema-invalid (missing required 'metric') --
+   ok=False error=missing required argument 'metric' for tool 'lookup_metric'
+
+-- unknown argument (bad_field) --
+   ok=False error=unknown argument 'bad_field' for tool 'search_knowledge'
+
+
+###### 3. TOOLAGENT DISPATCHING OVER MCP ######
+
+[mcp] agent transport = mcp; tools = ['search_knowledge', 'lookup_metric', 'escalate_incident']
+
+--- request: who should I notify for a P1 on topic:payments.settlement
+=== TOOL AGENT (Phase 5) ===
+Request : who should I notify for a P1 on topic:payments.settlement
+Transport: mcp
+  [1] tool=escalate_incident args={'entity_id': 'payments.settlement', 'severity': 'P1', 'message': 'Notify stakeholders for a P1 incident on payments.settlement.'}
+       approval-gated: output is a PLAN; a human must approve before any real action.
+       OK -> {"entity_id": "topic:payments.settlement", "recipients": {"app_owner": "payments-app-owner@example.com", "business_owner": "payments-biz-owner@example.com", "prod_support": "prodsupport-payments@example.com", "sre": "sre...
+Stop    : tool call succeeded
+
+--- request: what is the recent consumer_lag value on topic:payments.settlement
+=== TOOL AGENT (Phase 5) ===
+Request : what is the recent consumer_lag value on topic:payments.settlement
+Transport: mcp
+  [1] tool=lookup_metric args={'entity_id': 'topic:payments.settlement', 'metric': 'consumer_lag', 'window_points': 10}
+       OK -> {"entity_id": "topic:payments.settlement", "metric": "consumer_lag", "unit": "messages", "series": [40000, 55000, 80000, 110000, 125000], "latest": 125000, "trend": "rising", "source": "sandbox"}
+Stop    : tool call succeeded
+
+--- request: how do I handle rising consumer lag on a topic
+=== TOOL AGENT (Phase 5) ===
+Request : how do I handle rising consumer lag on a topic
+Transport: mcp
+  [1] tool=search_knowledge args={'query': 'how to handle rising consumer lag on a topic', 'top_k': 5}
+       OK -> {"found": true, "best_score": 0.5709119439125061, "hits": [{"source": "runbooks.md", "heading": "RB-01 — Consumer lag rising", "score": 0.571, "text": "RB-01 — Consumer lag rising\n**Symptoms:** `consumer_lag` growing be...
+Stop    : tool call succeeded
+       documents referenced (via search_knowledge over MCP):
+         - runbooks.md :: RB-01 — Consumer lag rising (0.571)
+         - escalation_guidelines.md :: P2 / High (0.348)
+         - faq.md :: EventHub Ops — Operator FAQ (0.344)
+         - escalation_guidelines.md :: P4 / Low (0.335)
+         - runbooks.md :: RB-04 — Producer error / retry surge (0.319)
+

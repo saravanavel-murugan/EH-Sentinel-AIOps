@@ -1,0 +1,47 @@
+[sentinel] providers: LLM=openai, EMBEDDINGS=openai (key set)
+[tools] registered: ['search_knowledge', 'lookup_metric', 'escalate_incident']
+
+###### CORRECT TOOL SELECTION ######
+
+--- request: who should I notify for a P1 on topic:payments.settlement
+=== TOOL AGENT (Phase 5) ===
+Request : who should I notify for a P1 on topic:payments.settlement
+  [1] tool=escalate_incident args={'entity_id': 'payments.settlement', 'severity': 'P1', 'message': 'Notify stakeholders for a P1 incident on payments.settlement.'}
+       approval-gated: output is a PLAN; a human must approve before any real action.
+       OK -> {"entity_id": "topic:payments.settlement", "recipients": {"app_owner": "payments-app-owner@example.com", "business_owner": "payments-biz-owner@example.com", "prod_support": "prodsupport-payments@example.com", "sre": "sre...
+Stop    : tool call succeeded
+
+--- request: what is the recent consumer_lag value on topic:payments.settlement
+=== TOOL AGENT (Phase 5) ===
+Request : what is the recent consumer_lag value on topic:payments.settlement
+  [1] tool=lookup_metric args={'entity_id': 'topic:payments.settlement', 'metric': 'consumer_lag', 'window_points': 10}
+       OK -> {"entity_id": "topic:payments.settlement", "metric": "consumer_lag", "unit": "messages", "series": [40000, 55000, 80000, 110000, 125000], "latest": 125000, "trend": "rising", "source": "sandbox"}
+Stop    : tool call succeeded
+
+--- request: how do I handle rising consumer lag on a topic
+=== TOOL AGENT (Phase 5) ===
+Request : how do I handle rising consumer lag on a topic
+  [1] tool=search_knowledge args={'query': 'how to handle rising consumer lag on a topic', 'top_k': 5}
+       OK -> {"found": true, "best_score": 0.5709119439125061, "hits": [{"source": "runbooks.md", "heading": "RB-01 — Consumer lag rising", "score": 0.571, "text": "RB-01 — Consumer lag rising\n**Symptoms:** `consumer_lag` growing be...
+Stop    : tool call succeeded
+
+
+###### INCORRECT / FAILED TOOL CALLS (guardrails) ######
+
+--- 1. schema-invalid argument (missing required 'metric') ---
+  dispatch ok=False error=missing required argument 'metric' for tool 'lookup_metric'
+
+--- 2. disallowed/unknown tool (restart_broker) ---
+  dispatch ok=False error=tool 'restart_broker' is not in the allow-list (known: ['search_knowledge', 'lookup_metric', 'escalate_incident'])
+
+--- 3. unknown argument (bad_field) ---
+  dispatch ok=False error=unknown argument 'bad_field' for tool 'search_knowledge'
+
+--- 4. loop prevention (repeated identical call capped) ---
+=== TOOL AGENT (Phase 5) ===
+Request : (loop demo) repeatedly request same metric
+  [1] tool=lookup_metric args={'entity_id': 'topic:payments.settlement', 'metric': 'consumer_lag'}
+       OK -> null
+  [2] tool=lookup_metric args={'entity_id': 'topic:payments.settlement', 'metric': 'consumer_lag'}
+       GUARDRAIL: repeated_call_blocked - 
+Stop    : loop prevented: repeated call lookup_metric:{"entity_id": "topic:payments.settlement", "metric": "consumer_lag"}

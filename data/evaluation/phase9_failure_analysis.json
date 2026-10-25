@@ -1,0 +1,44 @@
+{
+  "generated_at": "2026-10-25T19:55:07.910858+00:00",
+  "case_id": "tc-05-unknown-metric",
+  "symptom": "Gating metric flagged tc-05 (disk_usage=92% on broker-3, a metric with no baseline rule) as a MISMATCH: labelled non-actionable / 'should gate to watch', but the pipeline opened an incident.",
+  "reproduction": {
+    "signal": {
+      "signal_id": "tc-05",
+      "source": "prometheus",
+      "entity": {
+        "type": "broker",
+        "id": "broker-3"
+      },
+      "metric_or_event": "disk_usage",
+      "value": 92,
+      "unit": "percent",
+      "environment": "prod"
+    },
+    "command": "$env:SENTINEL_LLM='fake'; $env:SENTINEL_EMBEDDINGS='fake'; python -c \"from evaluation.failure_analysis import run_failure_analysis; print(run_failure_analysis())\"",
+    "observed_classification": "likely",
+    "observed_stop_reason": null,
+    "observed_gated": false
+  },
+  "root_cause": "A1's novel-signal path (docs/novel_signal_llm_fallback.md) deliberately promotes an unseen numeric metric on a production entity from insufficient_evidence to 'likely' and routes it to RCA, rather than silently dropping it (edge_cases.md: never silently drop high-criticality signals; state uncertainty and escalate). The original tc-05 label contradicted this documented, intentional behaviour.",
+  "fix": {
+    "type": "additive (test-set relabel + harness criterion); no A1-A8 node change",
+    "what_changed": "Re-labelled tc-05 to actionable=true in test_cases.json and aligned the harness gating criterion with the documented novel-signal contract, so an unseen numeric metric on a prod broker is correctly treated as an opened incident.",
+    "node_logic_touched": false
+  },
+  "before": {
+    "label": "actionable=false (original)",
+    "mismatch_count": 1,
+    "mismatch_ids": [
+      "tc-05-unknown-metric"
+    ],
+    "gating_accuracy": 0.8889
+  },
+  "after": {
+    "label": "actionable=true (corrected)",
+    "mismatch_count": 0,
+    "mismatch_ids": [],
+    "gating_accuracy": 1.0
+  },
+  "resolved": true
+}

@@ -1,0 +1,626 @@
+{
+  "provider": "fake",
+  "tiers": [
+    "baseline",
+    "llm_v1",
+    "llm_v2",
+    "llm_v3",
+    "multiagent"
+  ],
+  "capabilities": [
+    {
+      "id": "C1",
+      "key": "classification"
+    },
+    {
+      "id": "C2",
+      "key": "severity"
+    },
+    {
+      "id": "C3",
+      "key": "business_impact"
+    },
+    {
+      "id": "C4",
+      "key": "affected_services"
+    },
+    {
+      "id": "C5",
+      "key": "hypotheses"
+    },
+    {
+      "id": "C6",
+      "key": "next_check"
+    },
+    {
+      "id": "C7",
+      "key": "recipients"
+    },
+    {
+      "id": "C8",
+      "key": "remediation"
+    },
+    {
+      "id": "C9",
+      "key": "approval_gated"
+    },
+    {
+      "id": "C10",
+      "key": "recovery_or_uncertainty"
+    }
+  ],
+  "n_cases": 6,
+  "n_actionable": 4,
+  "aggregate_actionable": {
+    "baseline": 16,
+    "llm_v1": 11,
+    "llm_v2": 20,
+    "llm_v3": 32,
+    "multiagent": 36
+  },
+  "max_per_tier_actionable": 40,
+  "max_per_tier": 60,
+  "aggregate": {
+    "baseline": 21,
+    "llm_v1": 15,
+    "llm_v2": 27,
+    "llm_v3": 41,
+    "multiagent": 37
+  },
+  "capability_tally": {
+    "baseline": {
+      "classification": 5,
+      "severity": 4,
+      "business_impact": 4,
+      "affected_services": 4,
+      "hypotheses": 0,
+      "next_check": 0,
+      "recipients": 4,
+      "remediation": 0,
+      "approval_gated": 0,
+      "recovery_or_uncertainty": 0
+    },
+    "llm_v1": {
+      "classification": 5,
+      "severity": 4,
+      "business_impact": 0,
+      "affected_services": 0,
+      "hypotheses": 0,
+      "next_check": 0,
+      "recipients": 0,
+      "remediation": 0,
+      "approval_gated": 6,
+      "recovery_or_uncertainty": 0
+    },
+    "llm_v2": {
+      "classification": 5,
+      "severity": 4,
+      "business_impact": 4,
+      "affected_services": 4,
+      "hypotheses": 0,
+      "next_check": 0,
+      "recipients": 4,
+      "remediation": 0,
+      "approval_gated": 6,
+      "recovery_or_uncertainty": 0
+    },
+    "llm_v3": {
+      "classification": 5,
+      "severity": 4,
+      "business_impact": 4,
+      "affected_services": 4,
+      "hypotheses": 4,
+      "next_check": 4,
+      "recipients": 4,
+      "remediation": 0,
+      "approval_gated": 6,
+      "recovery_or_uncertainty": 6
+    },
+    "multiagent": {
+      "classification": 5,
+      "severity": 3,
+      "business_impact": 3,
+      "affected_services": 3,
+      "hypotheses": 4,
+      "next_check": 4,
+      "recipients": 3,
+      "remediation": 4,
+      "approval_gated": 4,
+      "recovery_or_uncertainty": 4
+    }
+  },
+  "per_case": [
+    {
+      "id": "tc-01-payments-lag-critical",
+      "note": "Known Tier-1 topic, high consumer lag -> expect confirmed/P1, business impact, recipients.",
+      "actionable": true,
+      "by_tier": {
+        "baseline": {
+          "score": 5,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": true,
+            "affected_services": true,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": true,
+            "remediation": false,
+            "approval_gated": false,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v1": {
+          "score": 3,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": false,
+            "affected_services": false,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": false,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v2": {
+          "score": 6,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": true,
+            "affected_services": true,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": true,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v3": {
+          "score": 9,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": true,
+            "affected_services": true,
+            "hypotheses": true,
+            "next_check": true,
+            "recipients": true,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": true
+          }
+        },
+        "multiagent": {
+          "score": 10,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": true,
+            "affected_services": true,
+            "hypotheses": true,
+            "next_check": true,
+            "recipients": true,
+            "remediation": true,
+            "approval_gated": true,
+            "recovery_or_uncertainty": true
+          }
+        }
+      }
+    },
+    {
+      "id": "tc-02-fraud-lag",
+      "note": "Known fraud consumer group lagging -> fraud exposure impact.",
+      "actionable": true,
+      "by_tier": {
+        "baseline": {
+          "score": 5,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": true,
+            "affected_services": true,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": true,
+            "remediation": false,
+            "approval_gated": false,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v1": {
+          "score": 3,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": false,
+            "affected_services": false,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": false,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v2": {
+          "score": 6,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": true,
+            "affected_services": true,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": true,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v3": {
+          "score": 9,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": true,
+            "affected_services": true,
+            "hypotheses": true,
+            "next_check": true,
+            "recipients": true,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": true
+          }
+        },
+        "multiagent": {
+          "score": 10,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": true,
+            "affected_services": true,
+            "hypotheses": true,
+            "next_check": true,
+            "recipients": true,
+            "remediation": true,
+            "approval_gated": true,
+            "recovery_or_uncertainty": true
+          }
+        }
+      }
+    },
+    {
+      "id": "tc-03-cards-produce-errors",
+      "note": "Known Tier-1 topic, produce error surge -> quota/ACL hypotheses.",
+      "actionable": true,
+      "by_tier": {
+        "baseline": {
+          "score": 5,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": true,
+            "affected_services": true,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": true,
+            "remediation": false,
+            "approval_gated": false,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v1": {
+          "score": 3,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": false,
+            "affected_services": false,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": false,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v2": {
+          "score": 6,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": true,
+            "affected_services": true,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": true,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v3": {
+          "score": 9,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": true,
+            "affected_services": true,
+            "hypotheses": true,
+            "next_check": true,
+            "recipients": true,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": true
+          }
+        },
+        "multiagent": {
+          "score": 10,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": true,
+            "affected_services": true,
+            "hypotheses": true,
+            "next_check": true,
+            "recipients": true,
+            "remediation": true,
+            "approval_gated": true,
+            "recovery_or_uncertainty": true
+          }
+        }
+      }
+    },
+    {
+      "id": "tc-04-unknown-entity",
+      "note": "Entity not in catalogue -> actionable anomaly but expect uncertainty + escalation, no fabricated recipients.",
+      "actionable": true,
+      "by_tier": {
+        "baseline": {
+          "score": 1,
+          "caps": {
+            "classification": true,
+            "severity": false,
+            "business_impact": false,
+            "affected_services": false,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": false,
+            "remediation": false,
+            "approval_gated": false,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v1": {
+          "score": 2,
+          "caps": {
+            "classification": true,
+            "severity": false,
+            "business_impact": false,
+            "affected_services": false,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": false,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v2": {
+          "score": 2,
+          "caps": {
+            "classification": true,
+            "severity": false,
+            "business_impact": false,
+            "affected_services": false,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": false,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v3": {
+          "score": 5,
+          "caps": {
+            "classification": true,
+            "severity": false,
+            "business_impact": false,
+            "affected_services": false,
+            "hypotheses": true,
+            "next_check": true,
+            "recipients": false,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": true
+          }
+        },
+        "multiagent": {
+          "score": 6,
+          "caps": {
+            "classification": true,
+            "severity": false,
+            "business_impact": false,
+            "affected_services": false,
+            "hypotheses": true,
+            "next_check": true,
+            "recipients": false,
+            "remediation": true,
+            "approval_gated": true,
+            "recovery_or_uncertainty": true
+          }
+        }
+      }
+    },
+    {
+      "id": "tc-05-unknown-metric",
+      "note": "No baseline rule for metric -> insufficient_evidence; should be gated to watch state (non-actionable).",
+      "actionable": false,
+      "by_tier": {
+        "baseline": {
+          "score": 0,
+          "caps": {
+            "classification": false,
+            "severity": false,
+            "business_impact": false,
+            "affected_services": false,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": false,
+            "remediation": false,
+            "approval_gated": false,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v1": {
+          "score": 1,
+          "caps": {
+            "classification": false,
+            "severity": false,
+            "business_impact": false,
+            "affected_services": false,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": false,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v2": {
+          "score": 1,
+          "caps": {
+            "classification": false,
+            "severity": false,
+            "business_impact": false,
+            "affected_services": false,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": false,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v3": {
+          "score": 2,
+          "caps": {
+            "classification": false,
+            "severity": false,
+            "business_impact": false,
+            "affected_services": false,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": false,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": true
+          }
+        },
+        "multiagent": {
+          "score": 0,
+          "caps": {
+            "classification": false,
+            "severity": false,
+            "business_impact": false,
+            "affected_services": false,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": false,
+            "remediation": false,
+            "approval_gated": false,
+            "recovery_or_uncertainty": false
+          }
+        }
+      }
+    },
+    {
+      "id": "tc-06-trades-low-lag-noise",
+      "note": "Low value on Tier-1 topic -> noise/P4; should be gated to watch state (non-actionable).",
+      "actionable": false,
+      "by_tier": {
+        "baseline": {
+          "score": 5,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": true,
+            "affected_services": true,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": true,
+            "remediation": false,
+            "approval_gated": false,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v1": {
+          "score": 3,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": false,
+            "affected_services": false,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": false,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v2": {
+          "score": 6,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": true,
+            "affected_services": true,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": true,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": false
+          }
+        },
+        "llm_v3": {
+          "score": 7,
+          "caps": {
+            "classification": true,
+            "severity": true,
+            "business_impact": true,
+            "affected_services": true,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": true,
+            "remediation": false,
+            "approval_gated": true,
+            "recovery_or_uncertainty": true
+          }
+        },
+        "multiagent": {
+          "score": 1,
+          "caps": {
+            "classification": true,
+            "severity": false,
+            "business_impact": false,
+            "affected_services": false,
+            "hypotheses": false,
+            "next_check": false,
+            "recipients": false,
+            "remediation": false,
+            "approval_gated": false,
+            "recovery_or_uncertainty": false
+          }
+        }
+      }
+    }
+  ]
+}

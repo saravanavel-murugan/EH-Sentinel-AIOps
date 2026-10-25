@@ -1,0 +1,180 @@
+{
+  "retrieval_quality": {
+    "embedder": "openai",
+    "min_score": 0.3,
+    "n_relevant": 8,
+    "n_nonrelevant": 2,
+    "hit@1": 8,
+    "hit@1_rate": 1.0,
+    "hit@3": 8,
+    "hit@3_rate": 1.0,
+    "correct_reject": 2,
+    "correct_reject_rate": 1.0,
+    "rows": [
+      {
+        "id": "rq-01",
+        "query": "consumer lag is rising on a topic, what should I check first",
+        "relevant": true,
+        "expect": "runbooks.md::RB-01",
+        "hit@1": true,
+        "hit@3": true,
+        "top_hits": [
+          "runbooks.md::RB-01 — Consumer lag rising (0.55)",
+          "escalation_guidelines.md::P2 / High (0.41)",
+          "faq.md::EventHub Ops — Operator FAQ (0.39)"
+        ]
+      },
+      {
+        "id": "rq-02",
+        "query": "kafka connect connector task failed with authentication error",
+        "relevant": true,
+        "expect": "runbooks.md::RB-03",
+        "hit@1": true,
+        "hit@3": true,
+        "top_hits": [
+          "runbooks.md::RB-03 — Kafka Connect connector/task failure (0.65)",
+          "runbooks.md::EventHub Ops — Kafka Incident Runbooks (0.34)",
+          "company_policy.md::EventHub Ops — Platform & Governance Policy (0.30)"
+        ]
+      },
+      {
+        "id": "rq-03",
+        "query": "under replicated partitions and a broker is down",
+        "relevant": true,
+        "expect": "runbooks.md::RB-02",
+        "hit@1": true,
+        "hit@3": true,
+        "top_hits": [
+          "runbooks.md::RB-02 — Broker unavailable / under-replicated partitions (0.71)",
+          "runbooks.md::RB-04 — Producer error / retry surge (0.46)",
+          "runbooks.md::RB-01 — Consumer lag rising (0.43)"
+        ]
+      },
+      {
+        "id": "rq-04",
+        "query": "producer error retry surge quota throttling",
+        "relevant": true,
+        "expect": "runbooks.md::RB-04",
+        "hit@1": true,
+        "hit@3": true,
+        "top_hits": [
+          "runbooks.md::RB-04 — Producer error / retry surge (0.59)",
+          "runbooks.md::RB-01 — Consumer lag rising (0.41)",
+          "escalation_guidelines.md::Escalation rules (0.35)"
+        ]
+      },
+      {
+        "id": "rq-05",
+        "query": "schema registry compatibility failure after deployment",
+        "relevant": true,
+        "expect": "runbooks.md::RB-05",
+        "hit@1": true,
+        "hit@3": true,
+        "top_hits": [
+          "runbooks.md::RB-05 — Schema Registry compatibility failure (0.59)",
+          "company_policy.md::Model governance (0.34)",
+          "runbooks.md::RB-03 — Kafka Connect connector/task failure (0.31)"
+        ]
+      },
+      {
+        "id": "rq-06",
+        "query": "how is severity decided and will sentinel restart a broker automatically",
+        "relevant": true,
+        "expect": "faq.md::severity",
+        "hit@1": true,
+        "hit@3": true,
+        "top_hits": [
+          "faq.md::EventHub Ops — Operator FAQ (0.56)",
+          "company_policy.md::Autonomy & approval (0.52)",
+          "runbooks.md::RB-02 — Broker unavailable / under-replicated partitions (0.46)"
+        ]
+      },
+      {
+        "id": "rq-07",
+        "query": "when do I escalate a P1 critical incident and who to page",
+        "relevant": true,
+        "expect": "escalation_guidelines.md::P1",
+        "hit@1": true,
+        "hit@3": true,
+        "top_hits": [
+          "escalation_guidelines.md::P1 / Critical (0.60)",
+          "escalation_guidelines.md::P2 / High (0.54)",
+          "escalation_guidelines.md::EventHub Ops — Escalation Guidelines (0.53)"
+        ]
+      },
+      {
+        "id": "rq-08",
+        "query": "what is the policy on redacting secrets before model calls",
+        "relevant": true,
+        "expect": "company_policy.md::redact",
+        "hit@1": true,
+        "hit@3": true,
+        "top_hits": [
+          "company_policy.md::Data handling & privacy (0.56)",
+          "company_policy.md::Audit (0.38)",
+          "company_policy.md::Model governance (0.31)"
+        ]
+      },
+      {
+        "id": "rq-09",
+        "query": "best recipe for a chocolate birthday cake with frosting",
+        "relevant": false,
+        "expect": "no relevant info",
+        "correct_reject": true,
+        "best_score": 0.056389905512332916
+      },
+      {
+        "id": "rq-10",
+        "query": "weather forecast for tomorrow in London",
+        "relevant": false,
+        "expect": "no relevant info",
+        "correct_reject": true,
+        "best_score": 0.10170425474643707
+      }
+    ]
+  },
+  "with_without": {
+    "n_actionable": 4,
+    "retrieval_found_count": 4,
+    "cites_runbook_with_retrieval": 0,
+    "cites_runbook_without_retrieval": 0,
+    "rows": [
+      {
+        "id": "tc-01-payments-lag-critical",
+        "entity": "topic:payments.settlement",
+        "retrieval_hit": true,
+        "retrieval_top": "RB-01 — Consumer lag rising",
+        "retrieval_top_score": 0.635,
+        "with_retrieval_cites_runbook": false,
+        "without_retrieval_cites_runbook": false
+      },
+      {
+        "id": "tc-02-fraud-lag",
+        "entity": "consumer_group:fraud.scoring",
+        "retrieval_hit": true,
+        "retrieval_top": "RB-01 — Consumer lag rising",
+        "retrieval_top_score": 0.667,
+        "with_retrieval_cites_runbook": false,
+        "without_retrieval_cites_runbook": false
+      },
+      {
+        "id": "tc-03-cards-produce-errors",
+        "entity": "topic:cards.authorization",
+        "retrieval_hit": true,
+        "retrieval_top": "RB-04 — Producer error / retry surge",
+        "retrieval_top_score": 0.667,
+        "with_retrieval_cites_runbook": false,
+        "without_retrieval_cites_runbook": false
+      },
+      {
+        "id": "tc-04-unknown-entity",
+        "entity": "topic:loans.disbursement",
+        "retrieval_hit": true,
+        "retrieval_top": "RB-01 — Consumer lag rising",
+        "retrieval_top_score": 0.635,
+        "with_retrieval_cites_runbook": false,
+        "without_retrieval_cites_runbook": false
+      }
+    ]
+  }
+}

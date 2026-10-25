@@ -1,0 +1,97 @@
+{
+  "generated_at": "2026-10-25T19:55:10.953383+00:00",
+  "provider": "fake",
+  "retrieval_enabled": false,
+  "result": "PASS",
+  "scenarios": [
+    {
+      "scenario": "normal_run",
+      "description": "signal turn via traced safe runtime",
+      "outcome": "success",
+      "kind": "signal",
+      "latency_ms": 26,
+      "status": "ok"
+    },
+    {
+      "scenario": "malformed_input",
+      "description": "internal error on bad input degraded gracefully",
+      "outcome": "graceful_error",
+      "kind": "error",
+      "error_type": "ValueError",
+      "latency_ms": 0,
+      "status": "error"
+    },
+    {
+      "scenario": "provider_outage",
+      "description": "hard provider failure degraded gracefully",
+      "outcome": "graceful_error",
+      "kind": "error",
+      "error_type": "_SimulatedProviderOutage",
+      "latency_ms": 2,
+      "status": "error"
+    },
+    {
+      "scenario": "missing_index",
+      "description": "retrieval disabled/missing index completes (no crash)",
+      "outcome": "success",
+      "kind": "signal",
+      "latency_ms": 13,
+      "status": "ok"
+    }
+  ],
+  "trace_tail": [
+    {
+      "run_id": "run-42190262",
+      "entry_point": "session.handle_turn",
+      "provider": "openai",
+      "status": "ok",
+      "latency_ms": 26,
+      "started_at": "2026-10-25T19:55:10.817585+00:00",
+      "ended_at": "2026-10-25T19:55:10.843138+00:00",
+      "error_type": null,
+      "error_message": null,
+      "extra": {}
+    },
+    {
+      "run_id": "run-476999ea",
+      "entry_point": "session.handle_turn",
+      "provider": "fake",
+      "status": "error",
+      "latency_ms": 0,
+      "started_at": "2026-10-25T19:55:10.855581+00:00",
+      "ended_at": "2026-10-25T19:55:10.855581+00:00",
+      "error_type": "ValueError",
+      "error_message": "malformed input: could not route turn",
+      "extra": {}
+    },
+    {
+      "run_id": "run-7c68cb9f",
+      "entry_point": "session.handle_turn",
+      "provider": "openai",
+      "status": "error",
+      "latency_ms": 2,
+      "started_at": "2026-10-25T19:55:10.894603+00:00",
+      "ended_at": "2026-10-25T19:55:10.896112+00:00",
+      "error_type": "_SimulatedProviderOutage",
+      "error_message": "simulated provider outage",
+      "extra": {}
+    },
+    {
+      "run_id": "run-bbcdbf82",
+      "entry_point": "session.handle_turn",
+      "provider": "openai",
+      "status": "ok",
+      "latency_ms": 13,
+      "started_at": "2026-10-25T19:55:10.927250+00:00",
+      "ended_at": "2026-10-25T19:55:10.939796+00:00",
+      "error_type": null,
+      "error_message": null,
+      "extra": {}
+    }
+  ],
+  "notes": [
+    "All runs use the offline deterministic fake provider (no key/network).",
+    "A redacting filter scrubs api-key/secret patterns before any write.",
+    "Graceful responses carry no stack trace and preserve the advisory read-only safety posture."
+  ]
+}

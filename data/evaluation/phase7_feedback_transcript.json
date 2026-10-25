@@ -1,0 +1,118 @@
+{
+  "generated_at": "2026-10-25T19:56:24.294802+00:00",
+  "provider": "openai",
+  "retrieval_enabled": false,
+  "before": {
+    "input": "{\"signal_id\": \"sig-p7-before\", \"source\": \"control_center\", \"entity\": {\"type\": \"topic\", \"id\": \"payments.settlement\"}, \"metric_or_event\": \"consumer_lag\", \"value\": 60000, \"unit\": \"messages\", \"environment\": \"prod\"}",
+    "adaptation": {
+      "entity": "topic:payments.settlement",
+      "severity_nudge": false,
+      "concise": false,
+      "recurrence_emphasis": false,
+      "explanations": []
+    },
+    "response": "=== SENTINEL SESSION — SIGNAL (end-to-end) ===\nTurn   : 1  ·  provider: openai\nEntity : topic:payments.settlement (known=True)\nMemory : first time this entity is seen (no prior incidents).\n\nPLAN: Triage and (if actionable) drive topic:payments.settlement / consumer_lag from raw signal to a consolidated, evidence-backed incident record and closure recommendation — advisory only, human approval for any action.\n  (10/10 steps complete)\n  [x] 1. Recall prior context (memory) — no prior incidents for topic:payments.settlement.\n  [x] 2. Validate signal / triage anomaly (A1) — classification=likely score=0.7\n  [x] 3. Correlate & map topology (A2) — candidate=incident_001\n  [x] 4. Assess severity & business impact (A3) — severity=P2\n  [x] 5. Form root-cause hypotheses (A4) — 3 hypothesis(es)\n  [x] 6. Recommend remediation (A5) — 3 action(s), read_only=True\n  [x] 7. Consolidate incident record (A6) — incident_id=incident_001\n  [x] 8. Notify stakeholders (A7) — channel=email delivery=not_sent\n  [x] 9. Verify recovery (A8) — recovery=monitoring closure=continue_monitoring\n  [x] 10. Persist incident to memory (memory) — stored incident_001 (now 1 for topic:payments.settlement/consumer_lag).\n\n--- Multi-agent pipeline output ---\n=== MULTI-AGENT INCIDENT (A1-A8 / LangGraph) ===\nEntity : topic:payments.settlement\nTrace  : A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8\nRetrieval: disabled\n\n[A1 Signal Validation / Anomaly Triage] classification=likely score=0.7\n     rationale: The consumer lag of 60000 messages exceeds the static threshold of 50000, indicating a potential issue that could lead to delayed or failed payments and regulatory risks.\n[A2 Correlation & Topology] incident=incident_001 correlated=['sig-p7-before', 'topic:payments.settlement']\n[A3 Severity & Business Impact] severity=P2 review_required=True\n     impact: Payments delayed or failed; settlement backlog; SLA/regulatory risk\n[A4 Root-Cause Hypothesis] 3 hypothesis(es)\n     - (medium) Increased message volume leading to consumer lag | next: Analyze transaction volume trends over the past week.\n     - (medium) Consumer application performance issues | next: Check consumer application logs for performance metrics and errors.\n     - (low) Network latency or connectivity issues | next: Run a network performance diagnostic to check for latency or packet loss.\n[A5 Remediation Recommendation] 3 action(s), read_only=True\n     - Analyze transaction volume trends over the past week (approval_required=True)\n     - Check consumer application logs for performance metrics and errors (approval_required=True)\n     - Run a network performance diagnostic to check for latency or packet loss (approval_required=True)\n[A6 Incident Summary & Ticket] incident_id=incident_001 (consolidated record)\n     summary   : A consumer lag of 60,000 messages has been detected in the Payments Settlement service, exceeding the static threshold of 50,000. This situation poses a risk of delayed or failed payments, leading to a settlement backlog and potential regulatory issues. Investigations are recommended to analyze transaction volume trends, check consumer application performance, and assess network conditions.\n     1.issue   : topic:payments.settlement: consumer_lag = 60000 messages (classification: likely, anomaly_score: 0.7) in prod.\n     2.RCA     : [source: LLM-inferred (no matching runbook; validate before acting)] [medium] Increased message volume leading to consumer lag (next check: Analyze transaction volume trends over the past week.); [medium] Consumer application performance issues (next check: Check consumer application logs for performance metrics and errors.); [low] Network latency or connectivity issues (next check: Run a network performance diagnostic to check for latency or packet loss.)\n     3.corr    : candidate=incident_001; correlated_signals=['sig-p7-before', 'topic:payments.settlement']; dependency_path=Payments Settlement\n     4.severity: P2 - The consumer lag of 60000 messages exceeds the static threshold of 50000, indicating a potential issue that could lead to delayed or failed payments and regulatory risks.\n     5.remedy  : 3 recommended action(s):\n        1. Analyze transaction volume trends over the past week (approval_required=True; verify: Review transaction volume data for anomalies or spikes.; rollback: No rollback necessary; this is a diagnostic action.)\n        2. Check consumer application logs for performance metrics and errors (approval_required=True; verify: Review logs for performance metrics and any reported errors.; rollback: No rollback necessary; this is a diagnostic action.)\n        3. Run a network performance diagnostic to check for latency or packet loss (approval_required=True; verify: Review diagnostic results for latency or packet loss.; rollback: No rollback necessary; this is a diagnostic action.)\n     6.impact  : Payments delayed or failed; settlement backlog; SLA/regulatory risk\n     7.notify  : app_owner, business_owner, prod_support, sre, on_call\n[A7 Stakeholder Communication & Escalation] channel=email delivery_status=not_sent\n     - app_owner: payments-app-owner@example.com\n     - business_owner: payments-biz-owner@example.com\n     - prod_support: prodsupport-payments@example.com\n     - sre: sre-streaming@example.com\n     - on_call: pager:payments-oncall / #inc-payments\n     escalation: Critical consumer lag impacting payment processing.\n[A8 Recovery Verification & Feedback] recovery_status=monitoring closure=continue_monitoring\n\nNOTE: advisory only; production actions require human approval."
+  },
+  "feedback_recorded": [
+    {
+      "category": "severity_too_low",
+      "signal": "down",
+      "note": "operator felt the assessed severity understated the business risk",
+      "feedback_id": "fb-1",
+      "negative": true,
+      "count_for_entity": 1
+    },
+    {
+      "category": "severity_too_low",
+      "signal": "down",
+      "note": "second operator agreed severity looked too low",
+      "feedback_id": "fb-2",
+      "negative": true,
+      "count_for_entity": 2
+    },
+    {
+      "category": "too_verbose",
+      "signal": "down",
+      "note": "response was longer than needed for triage",
+      "feedback_id": "fb-3",
+      "negative": true,
+      "count_for_entity": 3
+    },
+    {
+      "category": "too_verbose",
+      "signal": "down",
+      "note": "prefer a concise summary during an incident",
+      "feedback_id": "fb-4",
+      "negative": true,
+      "count_for_entity": 4
+    }
+  ],
+  "after": {
+    "input": "{\"signal_id\": \"sig-p7-after\", \"source\": \"control_center\", \"entity\": {\"type\": \"topic\", \"id\": \"payments.settlement\"}, \"metric_or_event\": \"consumer_lag\", \"value\": 72000, \"unit\": \"messages\", \"environment\": \"prod\"}",
+    "adaptation": {
+      "entity": "topic:payments.settlement",
+      "severity_nudge": true,
+      "concise": true,
+      "recurrence_emphasis": true,
+      "explanations": [
+        "severity_nudge: 2 operator(s) flagged severity_too_low on topic:payments.settlement — advisory recommendation to consider a higher severity (A3 output unchanged).",
+        "concise: 2 operator(s) flagged too_verbose on topic:payments.settlement — rendering a concise response (safety + escalation lines preserved).",
+        "recurrence_emphasis: 1 prior incident(s) and 4 negative operator feedback item(s) on topic:payments.settlement — surfacing a stronger recurrence banner."
+      ]
+    },
+    "response": "=== SENTINEL SESSION — SIGNAL (end-to-end) ===\nTurn   : 7  ·  provider: openai\nEntity : topic:payments.settlement (known=True)\nMemory : (!) RECURRING + prior negative operator feedback — 1 prior incident(s); last incident_001 (P2). Operators previously flagged this entity.\n\nPLAN: Triage and (if actionable) drive topic:payments.settlement / consumer_lag from raw signal to a consolidated, evidence-backed incident record and closure recommendation — advisory only, human approval for any action.\n  (10/10 steps complete)\n  [x] 1. Recall prior context (memory) — 1 prior incident(s) for topic:payments.settlement; last was incident_001 (P2).\n  [x] 2. Validate signal / triage anomaly (A1) — classification=likely score=0.8\n  [x] 3. Correlate & map topology (A2) — candidate=incident_001\n  [x] 4. Assess severity & business impact (A3) — severity=P2\n  [x] 5. Form root-cause hypotheses (A4) — 3 hypothesis(es)\n  [x] 6. Recommend remediation (A5) — 3 action(s), read_only=True\n  [x] 7. Consolidate incident record (A6) — incident_id=incident_001\n  [x] 8. Notify stakeholders (A7) — channel=email delivery=not_sent\n  [x] 9. Verify recovery (A8) — recovery=monitoring closure=continue_monitoring\n  [x] 10. Persist incident to memory (memory) — stored incident_001 (now 2 for topic:payments.settlement/consumer_lag).\n\n--- Multi-agent pipeline output (concise) ---\n[A1] classification=likely\n[A3] severity=P2 review_required=True\n[A5] 3 action(s), read_only=True (all require approval)\n[A7] channel=email escalation_reason=Critical consumer lag detected, requiring immediate attention to prevent payment processing issues. delivery=not_sent\n[A8] closure=continue_monitoring\nNOTE: advisory only; production actions require human approval.\n\n--- ADAPTATION (advisory) ---\nSeverity nudge: A3 assessed severity=P2 (UNCHANGED). Feedback-informed recommendation: consider whether a higher severity is warranted.\n- severity_nudge: 2 operator(s) flagged severity_too_low on topic:payments.settlement — advisory recommendation to consider a higher severity (A3 output unchanged).\n- concise: 2 operator(s) flagged too_verbose on topic:payments.settlement — rendering a concise response (safety + escalation lines preserved).\n- recurrence_emphasis: 1 prior incident(s) and 4 negative operator feedback item(s) on topic:payments.settlement — surfacing a stronger recurrence banner.\nNOTE: adaptation is advisory only; it changes presentation and never alters A1-A8 decisions, approval requirements, or escalation."
+  },
+  "feedback_summary": {
+    "count": 4,
+    "category_counts": {
+      "severity_too_low": 2,
+      "too_verbose": 2
+    },
+    "records": [
+      {
+        "feedback_id": "fb-1",
+        "entity": "topic:payments.settlement",
+        "metric": "consumer_lag",
+        "incident_id": "incident_001",
+        "signal": "down",
+        "rating": null,
+        "category": "severity_too_low",
+        "note": "operator felt the assessed severity understated the business risk",
+        "ts": "2026-10-25T19:55:58.068725+00:00"
+      },
+      {
+        "feedback_id": "fb-2",
+        "entity": "topic:payments.settlement",
+        "metric": "consumer_lag",
+        "incident_id": "incident_001",
+        "signal": "down",
+        "rating": null,
+        "category": "severity_too_low",
+        "note": "second operator agreed severity looked too low",
+        "ts": "2026-10-25T19:55:58.069852+00:00"
+      },
+      {
+        "feedback_id": "fb-3",
+        "entity": "topic:payments.settlement",
+        "metric": "consumer_lag",
+        "incident_id": "incident_001",
+        "signal": "down",
+        "rating": null,
+        "category": "too_verbose",
+        "note": "response was longer than needed for triage",
+        "ts": "2026-10-25T19:55:58.071306+00:00"
+      },
+      {
+        "feedback_id": "fb-4",
+        "entity": "topic:payments.settlement",
+        "metric": "consumer_lag",
+        "incident_id": "incident_001",
+        "signal": "down",
+        "rating": null,
+        "category": "too_verbose",
+        "note": "prefer a concise summary during an incident",
+        "ts": "2026-10-25T19:55:58.071979+00:00"
+      }
+    ]
+  }
+}
