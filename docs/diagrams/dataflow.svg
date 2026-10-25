@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640" viewBox="0 0 960 640" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#555"/>
+    </marker>
+    <style>
+      .n{rx:8;ry:8;stroke:#2b6cb0;stroke-width:1.5;fill:#ebf4ff;}
+      .ctx{fill:#f0fff4;stroke:#2f855a;}
+      .sig{fill:#fffaf0;stroke:#c05621;}
+      .t{font-size:11px;fill:#1a202c;}
+      .h{font-size:12px;font-weight:bold;fill:#1a202c;}
+      .e{stroke:#555;stroke-width:1.3;fill:none;marker-end:url(#arrow2);}
+      .up{stroke:#2f855a;stroke-width:1.1;fill:none;stroke-dasharray:4 3;marker-end:url(#arrow2);}
+      .title{font-size:16px;font-weight:bold;fill:#1a202c;}
+    </style>
+  </defs>
+
+  <text x="24" y="28" class="title">Data Flow : typed contracts between agents (IncidentState)</text>
+
+  <!-- signal + context -->
+  <rect x="24" y="50" width="200" height="40" class="n sig"/>
+  <text x="34" y="74" class="h">normalized signal</text>
+  <rect x="24" y="110" width="220" height="74" class="n ctx"/>
+  <text x="34" y="130" class="h">grounded context</text>
+  <text x="34" y="148" class="t">entity, metric, rule_classification,</text>
+  <text x="34" y="164" class="t">rule_severity, business_impact,</text>
+  <text x="34" y="180" class="t">stakeholders (deterministic)</text>
+  <line x1="124" y1="90" x2="124" y2="110" class="e"/>
+
+  <!-- agent chain down the center -->
+  <g>
+    <rect x="300" y="70" width="330" height="40" class="n"/>
+    <text x="310" y="86" class="h">A1Output</text>
+    <text x="310" y="102" class="t">classification, anomaly_score, evidence_refs, missing_data</text>
+
+    <rect x="300" y="135" width="330" height="40" class="n"/>
+    <text x="310" y="151" class="h">A2Output</text>
+    <text x="310" y="167" class="t">incident_candidate_id, correlated_signal_ids, dependency_path</text>
+
+    <rect x="300" y="200" width="330" height="40" class="n"/>
+    <text x="310" y="216" class="h">A3Output</text>
+    <text x="310" y="232" class="t">severity, impact, affected_services, review_required</text>
+
+    <rect x="300" y="265" width="330" height="40" class="n"/>
+    <text x="310" y="281" class="h">A4Output</text>
+    <text x="310" y="297" class="t">ranked hypotheses (evidence for/against), next_checks</text>
+
+    <rect x="300" y="330" width="330" height="40" class="n"/>
+    <text x="310" y="346" class="h">A5Output</text>
+    <text x="310" y="362" class="t">actions: preconditions, verification, rollback, requires_approval</text>
+
+    <rect x="300" y="395" width="330" height="40" class="n"/>
+    <text x="310" y="411" class="h">A6Output</text>
+    <text x="310" y="427" class="t">incident_id, idempotency_key, summary, timeline, ticket_payload</text>
+
+    <rect x="300" y="460" width="330" height="40" class="n"/>
+    <text x="310" y="476" class="h">A7Output</text>
+    <text x="310" y="492" class="t">recipients_by_role, message, channel, delivery_status</text>
+
+    <rect x="300" y="525" width="330" height="40" class="n"/>
+    <text x="310" y="541" class="h">A8Output</text>
+    <text x="310" y="557" class="t">recovery_status, closure_recommendation, feedback_record</text>
+  </g>
+
+  <!-- primary chain arrows -->
+  <line x1="465" y1="110" x2="465" y2="135" class="e"/>
+  <line x1="465" y1="175" x2="465" y2="200" class="e"/>
+  <line x1="465" y1="240" x2="465" y2="265" class="e"/>
+  <line x1="465" y1="305" x2="465" y2="330" class="e"/>
+  <line x1="465" y1="370" x2="465" y2="395" class="e"/>
+  <line x1="465" y1="435" x2="465" y2="460" class="e"/>
+  <line x1="465" y1="500" x2="465" y2="525" class="e"/>
+
+  <!-- context feeds A1 and every agent (summarized) -->
+  <line x1="244" y1="140" x2="300" y2="90" class="e"/>
+
+  <!-- selected upstream fan-in (dashed green) -->
+  <path d="M630,90 C680,120 680,200 630,220" class="up"/>
+  <text x="686" y="160" class="t" fill="#2f855a">A1→A3,A4,A6</text>
+  <path d="M630,220 C700,260 700,410 630,415" class="up"/>
+  <text x="686" y="320" class="t" fill="#2f855a">A3→A6,A7</text>
+  <path d="M630,415 C690,440 690,480 630,480" class="up"/>
+  <text x="686" y="452" class="t" fill="#2f855a">A6→A7,A8</text>
+
+  <text x="24" y="300" class="t">context feeds</text>
+  <text x="24" y="316" class="t">every agent</text>
+  <text x="24" y="600" class="t">Shared IncidentState carries signal, context, a1..a8 outputs, trace, errors.</text>
+</svg>

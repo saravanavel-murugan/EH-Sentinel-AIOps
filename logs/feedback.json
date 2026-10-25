@@ -1,0 +1,16 @@
+{
+  "updated_at": "2026-10-24T20:35:29.300508+00:00",
+  "records": [
+    {
+      "feedback_id": "fb-1",
+      "entity": "topic:payments.settlement",
+      "metric": "consumer_lag",
+      "incident_id": "incident-001",
+      "signal": "up",
+      "rating": 4,
+      "category": "other",
+      "note": "All the possible rootcause should be slated along with remediation receommendations actions while summarizing incident",
+      "ts": "2026-10-24T20:35:29.299514+00:00"
+    }
+  ]
+}
